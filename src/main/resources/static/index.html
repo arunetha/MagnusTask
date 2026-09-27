@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Employee Management System</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            margin: 30px;
+        }
+
+        .menu {
+            display: flex;
+            gap: 30px;
+            padding: 15px;
+            background: #eeeeee;
+        }
+
+        .menu-item {
+            cursor: pointer;
+            padding: 10px;
+            position: relative;
+        }
+
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 35px;
+            left: 0;
+            background: white;
+            border: 1px solid #ccc;
+            padding: 10px;
+            min-width: 180px;
+            z-index: 100;
+        }
+
+        .submenu div {
+            padding: 8px 20px;
+            cursor: pointer;
+        }
+
+        .submenu div:hover {
+            background: #eeeeee;
+        }
+
+        .menu-item:hover .submenu {
+            display: block;
+        }
+
+        #result {
+            margin-top: 30px;
+            font-size: 20px;
+        }
+
+        .section {
+            margin-top: 30px;
+        }
+
+        input {
+            padding: 8px;
+            margin: 5px;
+        }
+
+        button {
+            padding: 8px 15px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        table {
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th {
+            background: #eeeeee;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        #suggestions {
+            margin-top: 10px;
+        }
+
+        #employeeDetails {
+            margin-top: 15px;
+        }
+
+        #imagesSection img {
+            width: 200px;
+            height: 150px;
+            margin-right: 15px;
+            border: 2px solid #ccc;
+        }
+
+        #slider {
+            width: 400px;
+        }
+
+        .tooltip-box {
+            display: inline-block;
+            position: relative;
+            margin-top: 20px;
+        }
+
+        .tooltip-text {
+            visibility: hidden;
+            position: absolute;
+            bottom: 35px;
+            left: 0;
+            background: black;
+            color: white;
+            padding: 8px;
+            border-radius: 5px;
+            white-space: nowrap;
+        }
+
+        .tooltip-box:hover .tooltip-text {
+            visibility: visible;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 30%;
+            left: 40%;
+            background: white;
+            border: 2px solid #333;
+            padding: 25px;
+            z-index: 200;
+        }
+
+        .css-box {
+            margin-top: 20px;
+            padding: 20px;
+            border: 2px solid black;
+            width: 300px;
+        }
+
+        #iframeSection iframe {
+            width: 500px;
+            height: 250px;
+            border: 2px solid #333;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<h1>Employee Management System</h1>
+
+
+<!-- MAIN MENU -->
+
+<div class="menu">
+
+    <div class="menu-item">
+        Home
+    </div>
+
+
+    <div class="menu-item" onclick="showEmployees()">
+        Employees
+    </div>
+
+
+    <div class="menu-item">
+
+        More ▼
+
+        <div class="submenu">
+
+            <div onclick="showMessage('Menu')">
+                Menu
+            </div>
+
+            <div onclick="showAutocomplete()">
+                Autocomplete
+            </div>
+
+            <div onclick="showCollapse()">
+                Collapse Content
+            </div>
+
+            <div onclick="showImages()">
+                Images
+            </div>
+
+            <div onclick="showSlider()">
+                Slider
+            </div>
+
+            <div onclick="showTooltips()">
+                Tooltips
+            </div>
+
+            <div onclick="showPopup()">
+                Popups
+            </div>
+
+            <div onclick="showLinks()">
+                Links
+            </div>
+
+            <div onclick="showCSSProperties()">
+                CSS Properties
+            </div>
+
+            <div onclick="showIframes()">
+                IFrames
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div id="result">
+    Select an option from More Menu
+</div>
+
+
+<!-- EMPLOYEE CRUD -->
+
+<div id="employeeSection" class="section" style="display:none;">
+
+    <h2>Employee Management</h2>
+
+
+    <h3>Add Employee</h3>
+
+    <input type="text"
+           id="name"
+           placeholder="Name">
+
+
+    <input type="email"
+           id="email"
+           placeholder="Email">
+
+
+    <input type="text"
+           id="department"
+           placeholder="Department">
+
+
+    <input type="number"
+           id="salary"
+           placeholder="Salary">
+
+
+    <br>
+
+
+    <button onclick="addEmployee()">
+        Add Employee
+    </button>
+
+
+    <button onclick="loadEmployees()">
+        Refresh Employees
+    </button>
+
+
+    <h3>Employee List</h3>
+
+
+    <table border="1">
+
+        <thead>
+
+            <tr>
+
+                <th>ID</th>
+
+                <th>Name</th>
+
+                <th>Email</th>
+
+                <th>Department</th>
+
+                <th>Salary</th>
+
+                <th>Actions</th>
+
+            </tr>
+
+        </thead>
+
+
+        <tbody id="employeeTableBody">
+
+        </tbody>
+
+    </table>
+
+</div>
+
+
+<!-- AUTOCOMPLETE -->
+
+<div id="autocompleteSection"
+     class="section"
+     style="display:none;">
+
+    <h2>Autocomplete</h2>
+
+
+    <input type="text"
+           id="employeeSearch"
+           placeholder="Enter employee name"
+           onkeyup="searchEmployee()">
+
+
+    <div id="suggestions"></div>
+
+</div>
+
+
+<!-- COLLAPSE CONTENT -->
+
+<div id="collapseSection"
+     class="section"
+     style="display:none;">
+
+    <h2>Employee Details</h2>
+
+
+    <button onclick="toggleContent()">
+        Show / Hide Employee Details
+    </button>
+
+
+    <div id="employeeDetails">
+
+        <p>Name: Aravind</p>
+
+        <p>Email: aravind@gmail.com</p>
+
+        <p>Department: IT</p>
+
+        <p>Salary: 30000</p>
+
+    </div>
+
+</div>
+
+
+<!-- IMAGES -->
+
+<div id="imagesSection"
+     class="section"
+     style="display:none;">
+
+    <h2>Images</h2>
+
+
+    <img src="https://via.placeholder.com/200x150?text=Employee+1"
+         alt="Employee 1">
+
+
+    <img src="https://via.placeholder.com/200x150?text=Employee+2"
+         alt="Employee 2">
+
+</div>
+
+
+<!-- SLIDER -->
+
+<div id="sliderSection"
+     class="section"
+     style="display:none;">
+
+    <h2>Salary Slider</h2>
+
+
+    <input type="range"
+           id="slider"
+           min="10000"
+           max="100000"
+           value="30000"
+           step="5000"
+           oninput="updateSalary()">
+
+
+    <p>
+
+        Salary:
+        ₹<span id="salaryValue">30000</span>
+
+    </p>
+
+</div>
+
+
+<!-- TOOLTIPS -->
+
+<div id="tooltipSection"
+     class="section"
+     style="display:none;">
+
+    <h2>Tooltips</h2>
+
+
+    <div class="tooltip-box">
+
+        Move your mouse here
+
+
+        <span class="tooltip-text">
+
+            Employee Information
+
+        </span>
+
+    </div>
+
+</div>
+
+
+<!-- POPUPS -->
+
+<div id="popupSection"
+     class="section"
+     style="display:none;">
+
+    <h2>Popups</h2>
+
+
+    <button onclick="openPopup()">
+        Open Popup
+    </button>
+
+</div>
+
+
+<div id="popup"
+     class="popup">
+
+    <h2>Employee Popup</h2>
+
+
+    <p>
+        Welcome to Employee Management System.
+    </p>
+
+
+    <button onclick="closePopup()">
+        Close
+    </button>
+
+</div>
+
+
+<!-- LINKS -->
+
+<div id="linksSection"
+     class="section"
+     style="display:none;">
+
+    <h2>Links</h2>
+
+
+    <p>
+
+        <a href="https://www.google.com"
+           target="_blank">
+
+            Google
+
+        </a>
+
+    </p>
+
+
+    <p>
+
+        <a href="https://github.com"
+           target="_blank">
+
+            GitHub
+
+        </a>
+
+    </p>
+
+</div>
+
+
+<!-- CSS PROPERTIES -->
+
+<div id="cssSection"
+     class="section"
+     style="display:none;">
+
+    <h2>CSS Properties</h2>
+
+
+    <div class="css-box"
+         id="cssBox">
+
+        This box demonstrates CSS properties.
+
+    </div>
+
+
+    <br>
+
+
+    <button onclick="changeCSS()">
+        Change CSS
+    </button>
+
+</div>
+
+
+<!-- IFRAMES -->
+
+<div id="iframeSection"
+     class="section"
+     style="display:none;">
+
+    <h2>IFrames</h2>
+
+
+    <iframe
+        src="https://www.example.com">
+    </iframe>
+
+</div>
+
+
+<script>
+
+
+/* HIDE ALL SECTIONS */
+
+function hideAllSections() {
+
+    document.getElementById("employeeSection").style.display = "none";
+
+    document.getElementById("autocompleteSection").style.display = "none";
+
+    document.getElementById("collapseSection").style.display = "none";
+
+    document.getElementById("imagesSection").style.display = "none";
+
+    document.getElementById("sliderSection").style.display = "none";
+
+    document.getElementById("tooltipSection").style.display = "none";
+
+    document.getElementById("popupSection").style.display = "none";
+
+    document.getElementById("linksSection").style.display = "none";
+
+    document.getElementById("cssSection").style.display = "none";
+
+    document.getElementById("iframeSection").style.display = "none";
+
+    document.getElementById("popup").style.display = "none";
+}
+
+
+/* MENU */
+
+function showMessage(option) {
+
+    hideAllSections();
+
+    document.getElementById("result").innerText =
+        "You selected: " + option;
+}
+
+
+/* EMPLOYEES */
+
+function showEmployees() {
+
+    hideAllSections();
+
+    document.getElementById("result").innerText = "";
+
+    document.getElementById("employeeSection").style.display = "block";
+
+    loadEmployees();
+}
+
+
+/* ADD EMPLOYEE */
+
+function addEmployee() {
+
+    let employee = {
+
+        name: document.getElementById("name").value,
+
+        email: document.getElementById("email").value,
+
+        department: document.getElementById("department").value,
+
+        salary: Number(
+            document.getElementById("salary").value
+        )
+
+    };
+
+
+    fetch("http://localhost:8083/employees", {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify(employee)
+
+    })
+
+    .then(response => {
+
+        if (!response.ok) {
+            throw new Error("Failed to add employee");
+        }
+
+        return response.json();
+
+    })
+
+    .then(data => {
+
+        alert("Employee added successfully");
+
+        document.getElementById("name").value = "";
+
+        document.getElementById("email").value = "";
+
+        document.getElementById("department").value = "";
+
+        document.getElementById("salary").value = "";
+
+        loadEmployees();
+
+    })
+
+    .catch(error => {
+
+        alert("Error: " + error.message);
+
+    });
+
+}
+
+
+/* GET ALL EMPLOYEES */
+
+function loadEmployees() {
+
+    fetch("http://localhost:8083/employees")
+
+    .then(response => response.json())
+
+    .then(employees => {
+
+        let table = "";
+
+
+        employees.forEach(employee => {
+
+            table += `
+
+                <tr>
+
+                    <td>${employee.id}</td>
+
+                    <td>${employee.name}</td>
+
+                    <td>${employee.email}</td>
+
+                    <td>${employee.department}</td>
+
+                    <td>${employee.salary}</td>
+
+                    <td>
+
+                        <button
+                            onclick="editEmployee(
+                                ${employee.id},
+                                '${employee.name}',
+                                '${employee.email}',
+                                '${employee.department}',
+                                ${employee.salary}
+                            )">
+
+                            Edit
+
+                        </button>
+
+
+                        <button
+                            onclick="deleteEmployee(${employee.id})">
+
+                            Delete
+
+                        </button>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        });
+
+
+        document.getElementById("employeeTableBody").innerHTML =
+            table;
+
+    })
+
+    .catch(error => {
+
+        alert("Unable to load employees");
+
+    });
+
+}
+
+
+/* UPDATE EMPLOYEE */
+
+function editEmployee(
+    id,
+    name,
+    email,
+    department,
+    salary
+) {
+
+    let newName =
+        prompt("Enter name", name);
+
+    if (newName === null) {
+        return;
+    }
+
+
+    let newEmail =
+        prompt("Enter email", email);
+
+    if (newEmail === null) {
+        return;
+    }
+
+
+    let newDepartment =
+        prompt("Enter department", department);
+
+    if (newDepartment === null) {
+        return;
+    }
+
+
+    let newSalary =
+        prompt("Enter salary", salary);
+
+    if (newSalary === null) {
+        return;
+    }
+
+
+    let employee = {
+
+        name: newName,
+
+        email: newEmail,
+
+        department: newDepartment,
+
+        salary: Number(newSalary)
+
+    };
+
+
+    fetch(
+        "http://localhost:8083/employees/" + id,
+        {
+
+            method: "PUT",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify(employee)
+
+        }
+    )
+
+    .then(response => response.json())
+
+    .then(data => {
+
+        alert("Employee updated successfully");
+
+        loadEmployees();
+
+    })
+
+    .catch(error => {
+
+        alert("Unable to update employee");
+
+    });
+
+}
+
+
+/* DELETE EMPLOYEE */
+
+function deleteEmployee(id) {
+
+    let confirmDelete =
+        confirm("Are you sure you want to delete this employee?");
+
+
+    if (!confirmDelete) {
+        return;
+    }
+
+
+    fetch(
+        "http://localhost:8083/employees/" + id,
+        {
+
+            method: "DELETE"
+
+        }
+    )
+
+    .then(response => response.text())
+
+    .then(message => {
+
+        alert(message);
+
+        loadEmployees();
+
+    })
+
+    .catch(error => {
+
+        alert("Unable to delete employee");
+
+    });
+
+}
+
+
+/* AUTOCOMPLETE */
+
+function showAutocomplete() {
+
+    hideAllSections();
+
+    document.getElementById("result").innerText = "";
+
+    document.getElementById("autocompleteSection").style.display =
+        "block";
+}
+
+
+function searchEmployee() {
+
+    let input =
+        document.getElementById("employeeSearch").value.toLowerCase();
+
+
+    let employees = [
+
+        "Aravind",
+
+        "Rahul",
+
+        "Suresh",
+
+        "Priya",
+
+        "Anil"
+
+    ];
+
+
+    if (input === "") {
+
+        document.getElementById("suggestions").innerHTML = "";
+
+        return;
+
+    }
+
+
+    let result =
+        employees.filter(function(name) {
+
+            return name.toLowerCase().startsWith(input);
+
+        });
+
+
+    document.getElementById("suggestions").innerHTML =
+        result.join("<br>");
+}
+
+
+/* COLLAPSE */
+
+function showCollapse() {
+
+    hideAllSections();
+
+    document.getElementById("result").innerText = "";
+
+    document.getElementById("collapseSection").style.display =
+        "block";
+}
+
+
+function toggleContent() {
+
+    let content =
+        document.getElementById("employeeDetails");
+
+
+    if (content.style.display === "none") {
+
+        content.style.display = "block";
+
+    } else {
+
+        content.style.display = "none";
+
+    }
+}
+
+
+/* IMAGES */
+
+function showImages() {
+
+    hideAllSections();
+
+    document.getElementById("result").innerText = "";
+
+    document.getElementById("imagesSection").style.display =
+        "block";
+}
+
+
+/* SLIDER */
+
+function showSlider() {
+
+    hideAllSections();
+
+    document.getElementById("result").innerText = "";
+
+    document.getElementById("sliderSection").style.display =
+        "block";
+}
+
+
+function updateSalary() {
+
+    let slider =
+        document.getElementById("slider");
+
+
+    document.getElementById("salaryValue").innerText =
+        slider.value;
+}
+
+
+/* TOOLTIPS */
+
+function showTooltips() {
+
+    hideAllSections();
+
+    document.getElementById("result").innerText = "";
+
+    document.getElementById("tooltipSection").style.display =
+        "block";
+}
+
+
+/* POPUP */
+
+function showPopup() {
+
+    hideAllSections();
+
+    document.getElementById("result").innerText = "";
+
+    document.getElementById("popupSection").style.display =
+        "block";
+}
+
+
+function openPopup() {
+
+    document.getElementById("popup").style.display =
+        "block";
+}
+
+
+function closePopup() {
+
+    document.getElementById("popup").style.display =
+        "none";
+}
+
+
+/* LINKS */
+
+function showLinks() {
+
+    hideAllSections();
+
+    document.getElementById("result").innerText = "";
+
+    document.getElementById("linksSection").style.display =
+        "block";
+}
+
+
+/* CSS PROPERTIES */
+
+function showCSSProperties() {
+
+    hideAllSections();
+
+    document.getElementById("result").innerText = "";
+
+    document.getElementById("cssSection").style.display =
+        "block";
+}
+
+
+function changeCSS() {
+
+    let box =
+        document.getElementById("cssBox");
+
+
+    box.style.backgroundColor = "lightblue";
+
+    box.style.color = "darkblue";
+
+    box.style.borderRadius = "15px";
+
+    box.style.fontSize = "20px";
+}
+
+
+/* IFRAMES */
+
+function showIframes() {
+
+    hideAllSections();
+
+    document.getElementById("result").innerText = "";
+
+    document.getElementById("iframeSection").style.display =
+        "block";
+}
+
+
+</script>
+
+</body>
+
+</html>
